@@ -38,7 +38,7 @@ Setup Steps
 
 Clone the repository
 
-bashCopygit clone https://github.com/heykaranarora/jobportal.git
+git clone https://github.com/heykaranarora/JobPortal-webApp.git
 cd jobportal
 
 Install dependencies
