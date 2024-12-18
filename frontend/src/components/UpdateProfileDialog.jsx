@@ -15,10 +15,12 @@ import { setUser } from "../redux/authSlice";
 import { toast } from "sonner";
 import { USER_API_END_POINT } from "@/utils/constant";
 
-// Validate if phone number is exactly 10 digits
 const validatePhoneNumber = (phoneNumber) => {
-    const cleaned = phoneNumber.replace(/\D/g, '');
-    return cleaned.length === 10;
+  if (typeof phoneNumber !== 'string') {
+    return false; // Return false if phoneNumber is not a string
+  }
+  const cleaned = phoneNumber.replace(/\D/g, ''); // Remove non-digit characters
+  return cleaned.length === 10; // Ensure the length is exactly 10 digits
 };
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
@@ -53,7 +55,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    // Validate phone number
+    //  Validate phone number
     if (!validatePhoneNumber(input.phoneNumber)) {
       toast.error("Phone number must be exactly 10 digits.");
       return;

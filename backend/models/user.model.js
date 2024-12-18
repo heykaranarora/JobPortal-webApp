@@ -1,40 +1,46 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const userSchema =new mongoose.Schema({
-    fullname:{
-        type:String,
-        required:true
+const userSchema = new mongoose.Schema({
+    fullname: {
+        type: String,
+        required: true
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
-    phoneNumber:{
-        type:Number,
-        required:true
+    phoneNumber: {
+        type: Number,
+        required: true
     },
-    password:{
-        type:String,
-        required:true
+    password: {
+        type: String,
+        required: true
     },
-    role:{
-        type:String,
-        anum:['student','recruiter'],
-        requireed:true
+    role: {
+        type: String,
+        enum: ['student', 'recruiter'],
+        required: true
     },
-    profile:{
-        bio:{type:String},
-        skills:[{type:String}],
-        resume:{type:String},
-        resumeOriginalName:{type:String},
-        company:{type:mongoose.Schema.Types.ObjectId,ref:'Company'},
-        profilePhoto:{
-            type:String,
-            default:""
+    Blocked: {
+        type: Boolean,
+        default: false
+    },
+    profile: {
+        bio: { type: String },
+        skills: [{ type: String }],
+        resume: { type: String },
+        resumeOriginalName: { type: String },
+        company: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' },
+        profilePhoto: {
+            type: String,
+            default: ""
         }
+    },
+    lastLogin: {
+        type: Date, 
     }
-    
-},{timestamps:true});
+}, { timestamps: true });
 
-export const User=mongoose.model('User',userSchema);
+export const User = mongoose.model('User', userSchema);

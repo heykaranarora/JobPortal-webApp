@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import useGetCompanyById from "@/hooks/useGetCompanyById";
+
 const CompanySetUp = () => {
   const params = useParams();
   useGetCompanyById(params.id);
@@ -21,7 +22,7 @@ const CompanySetUp = () => {
     file: null,
   });
 
-  const {singleCompany} = useSelector((state) => state.company);
+  const { singleCompany } = useSelector((state) => state.company);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -67,34 +68,34 @@ const CompanySetUp = () => {
     }
   };
 
-
-  useEffect(()=>{
+  useEffect(() => {
     setInput({
       name: singleCompany?.companyName || "",
-      description:singleCompany?.description || "",
-      website:singleCompany?.website || "",
-      location:singleCompany?.location || "",
-      file: singleCompany?.file|| null,
-    })
-  },[singleCompany])
+      description: singleCompany?.description || "",
+      website: singleCompany?.website || "",
+      location: singleCompany?.location || "",
+      file: singleCompany?.file || null,
+    });
+  }, [singleCompany]);
+
   return (
     <div>
       <Navbar />
-      <div className="max-w-xl mx-auto my-10">
+      <div className="max-w-4xl mx-auto my-10 p-6 bg-white shadow-lg rounded-lg">
         <form onSubmit={submitHandler}>
-          <div className="flex items-center gap-5 p-8">
+          <div className="flex items-center gap-5 p-4 border-b">
             <Button
               onClick={() => navigate("/admin/companies")}
               variant="outline"
-              className="flex items-center gap-2 text-gray-500 font-semibold"
+              className="flex items-center gap-2 text-gray-500 font-semibold hover:bg-gray-100 transition"
             >
               <ArrowLeft />
               <span>Back</span>
             </Button>
-            <h1 className="font-bold text-xl">Company Setup</h1>
+            <h1 className="font-bold text-xl text-gray-800">Company Setup</h1>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
             <div>
               <Label>Company Name</Label>
               <Input
@@ -102,6 +103,7 @@ const CompanySetUp = () => {
                 name="name"
                 value={input.name}
                 onChange={changeEventHandler}
+                className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
@@ -111,6 +113,7 @@ const CompanySetUp = () => {
                 name="description"
                 value={input.description}
                 onChange={changeEventHandler}
+                className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
@@ -120,6 +123,7 @@ const CompanySetUp = () => {
                 name="website"
                 value={input.website}
                 onChange={changeEventHandler}
+                className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
@@ -129,6 +133,7 @@ const CompanySetUp = () => {
                 name="location"
                 value={input.location}
                 onChange={changeEventHandler}
+                className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
@@ -137,21 +142,25 @@ const CompanySetUp = () => {
                 type="file"
                 accept="image/*"
                 onChange={changeFileHandler}
+                className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
 
           {loading ? (
-            <Button className="w-full py-3 my-4 bg-blue-500 text-white rounded-md flex justify-center items-center">
+            <Button
+              className="w-full py-3 my-6 bg-blue-500 text-white rounded-md flex justify-center items-center"
+              disabled
+            >
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Please wait
             </Button>
           ) : (
             <Button
               type="submit"
-              className="w-full py-3 my-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+              className="w-full py-3 my-6 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
             >
-              Update
+              Update Company
             </Button>
           )}
         </form>

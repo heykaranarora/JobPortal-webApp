@@ -7,10 +7,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
-import AdminNavbar from "./AdminNavbar";
-import { setAdmin } from "../../redux/adminSlice"; // Ensure correct import
+import AdminNavbar from "./SiteNavbar";
+import { setAdmin } from "../../redux/adminSlice"; 
+import { Loader2 } from "lucide-react";
 
-const LoginAdmin = () => {
+const LoginSite = () => {
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [input, setInput] = useState({
     username: "",
@@ -28,6 +30,7 @@ const LoginAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const res = await fetch('http://localhost:8000/api/v1/admin/login', {
@@ -44,11 +47,12 @@ const LoginAdmin = () => {
       if (data.success) {
         dispatch(setAdmin(data.admin)); // Set admin data from the response
         toast.success(data.message);
-        navigate("/owner/dashboard");
+        navigate("/owner/verifyadmin");
       } else {
         throw new Error(data.message || "Login failed");
       }
     } catch (error) {
+      setLoading(false);
       toast.error(error.message);
     }
   };
@@ -96,16 +100,20 @@ const LoginAdmin = () => {
             </span>
           </div>
 
-          <Button
-            type="submit"
-            className="w-full py-3 my-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-          >
-            Login
-          </Button>
+          {loading ? (
+              <Button className="w-full my-4" disabled>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </Button>
+            ) : (
+              <Button type="submit" className="w-full my-4">
+                Login
+              </Button>
+            )}
         </form>
       </div>
     </div>
   );
 };
 
-export default LoginAdmin;
+export default LoginSite;

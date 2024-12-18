@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "./shared/Navbar";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -8,43 +8,54 @@ import { Label } from "./ui/label";
 import AppliedJobTable from "./AppliedJobTable";
 import UpdateProfileDialog from "./UpdateProfileDialog";
 import { useSelector } from "react-redux";
-import { LogOut, User2 } from 'lucide-react'
+import { LogOut, User2 } from "lucide-react";
 import useGetAppliedJobs from "@/hooks/useGetAppliedJobs";
 
-// const skills = ["HTML", "CSS", "JAVA", "REACTJS"];
-const isResume = true;
-
 const Profile = () => {
-  useGetAppliedJobs();
+  useGetAppliedJobs(); // Hook to fetch applied jobs
   const [open, setOpen] = useState(false);
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth); // Getting user data from Redux store
+
+  if (!user) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p>Loading...</p>
+      </div>
+    ); // Loading state if user data is not available yet
+  }
+
   return (
     <div>
       <Navbar />
       <div className="max-w-4xl mx-auto bg-white border-gray-200 rounded-2xl my-2 p-8">
-        <div className="flex justify-between">
+        <div className="flex flex-col sm:flex-row sm:justify-between gap-6">
+          {/* User Info */}
           <div className="flex items-center gap-4">
             <Avatar className="h-24 w-24">
               <AvatarImage
-                src={user?.profile?.profilePhoto}
+                src={user?.profile?.profilePhoto || "/default-profile.png"} // Default profile image
                 alt="Profile Image"
               />
             </Avatar>
             <div>
               <h1 className="font-medium text-xl">{user?.fullname}</h1>
-              <p>{user?.profile?.bio}</p>
+              <p className="text-sm text-gray-500">{user?.profile?.bio}</p>
             </div>
           </div>
+
+          {/* Edit Profile Button */}
           <Button
             onClick={() => setOpen(true)}
-            className="text-right"
+            className="text-right mt-4 sm:mt-0"
             variant="outline"
+            aria-label="Edit Profile"
           >
             <Pen />
           </Button>
         </div>
 
         <div className="my-5">
+          {/* Email & Phone */}
           <div className="flex items-center gap-4">
             <Mail />
             <span>{user?.email}</span>
@@ -56,37 +67,45 @@ const Profile = () => {
         </div>
 
         <div>
-          <h1 className="font-bold ">Skills</h1>
-
-          <div className="flex item-center gap-1 mt-2 text-lg">
-            {user?.profile?.skills.length !== 0 ? (
-              user?.profile.skills.map((item, index) => <Badge key={index}>{item}</Badge>)
+          {/* Skills Section */}
+          <h1 className="font-bold text-lg">Skills</h1>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {user?.profile?.skills?.length > 0 ? (
+              user.profile.skills.map((skill, index) => (
+                <Badge key={index}>{skill}</Badge>
+              ))
             ) : (
-              <span>NA</span>
+              <span className="text-gray-500">No skills added yet</span>
             )}
           </div>
         </div>
 
-        <div className="grid w-full max-w-sm item-center gap-1.5 mt-2">
+        <div className="grid w-full max-w-sm item-center gap-1.5 mt-4">
+          {/* Resume Section */}
           <Label className="text-md font-bold">Resume</Label>
           {user?.profile?.resume ? (
             <a
               target="_blank"
-              href={user?.profile?.resume}
-              className="text-blue-500 w-full hover:underline cursor-pointer"
+              href={user.profile.resume} // This should be the path to the uploaded resume
+              className="text-blue-500 hover:underline"
+              rel="noopener noreferrer"
             >
-              {user?.profile?.resumeOriginalName}
+              {user.profile.resumeOriginalName}{" "}
+              {/* Display the original resume name */}
             </a>
           ) : (
-            <span>NA</span>
+            <span className="text-gray-500">No resume uploaded</span>
           )}
         </div>
       </div>
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl">
+
+      {/* Applied Jobs */}
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl my-5 p-8">
         <h1 className="font-bold text-lg my-5">Applied Jobs</h1>
         <AppliedJobTable />
       </div>
 
+      {/* Profile Update Dialog */}
       <UpdateProfileDialog open={open} setOpen={setOpen} />
     </div>
   );

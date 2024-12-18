@@ -7,14 +7,18 @@ import Browse from './components/Browse'
 import Profile from './components/Profile'
 import JobDescription from './components/JobDescription'
 import Companies from './components/admin/Companies'
-import LoginAdmin from './components/owner/loginadmin'
-import UserList from './components/owner/UserList'
+import LoginAdmin from './components/SiteOwner/LoginSite'
+import UserList from './components/SiteOwner/UserList'
 import ComapnyCreate from './components/admin/ComapnyCreate'
 import ComapnySetUp from './components/admin/CompanySetUp'
 import AdminJobs from './components/admin/AdminJobs'
 import PostJob from './components/admin/PostJob'
 import Applicants from './components/admin/Applicants'
 import ProtectedRoute from './components/admin/ProtectedRoute'
+import VerifyOtp from './components/SiteOwner/VerifyOtp'
+import StudentDetails from './components/SiteOwner/StudentDetails'
+import CompanyDetails from './components/SiteOwner/CompanyDetails'
+import RecuiterDetails from './components/SiteOwner/RecuiterDetails'
 
 const appRouter=createBrowserRouter([
   {
@@ -83,7 +87,24 @@ const appRouter=createBrowserRouter([
   {
     path:"/admin/jobs/:id/applicants",
     element:<Applicants/>
-  }
+  },
+  {
+    path:"/owner/verifyadmin",
+    element:<VerifyOtp/>
+  },
+  {
+    path:"/owner/studentlist",
+    element:<StudentDetails/>
+  },
+  {
+    path:"/owner/recuiterlist",
+    element:<RecuiterDetails/>
+  },
+  {
+    path:"/owner/companylist",
+    element:<CompanyDetails/>
+  },
+
 
 ]);
 function App() {

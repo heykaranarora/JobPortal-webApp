@@ -73,23 +73,24 @@ export const getCompanyById = async (req, res) => {
 export const updateCompany = async (req, res) => {
   try {
     const { companyName, description, website, location } = req.body;
-    const file = req.file;
-    // Cloudinary upload (assuming it happens here)
-    const fileUri = getDataUri(file);
-    const cloudinaryResponse = await cloudinary.uploader.upload(
-      fileUri.content
-    );
-    const logo = cloudinaryResponse.secure_url;
+    const file = req.file;  
 
-    const updateData = { companyName, description, website, location, logo };
+    let logo = null;
+    if (file) {
+      const fileUri = getDataUri(file);
+      const cloudinaryResponse = await cloudinary.uploader.upload(fileUri.content);
+      logo = cloudinaryResponse.secure_url;
+    }
 
-    const company = await Company.findByIdAndUpdate(req.params.id, updateData, {
-      new: true,
-    });
+    const updateData = { companyName, description, website, location };
+    
+    if (logo) {
+      updateData.logo = logo;
+    }
+
+    const company = await Company.findByIdAndUpdate(req.params.id, updateData, { new: true });
     if (!company) {
-      return res
-        .status(404)
-        .json({ message: "Company not found", success: false });
+      return res.status(404).json({ message: "Company not found", success: false });
     }
 
     return res.status(200).json({

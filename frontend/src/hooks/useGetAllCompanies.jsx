@@ -20,23 +20,23 @@ const useGetAllCompanies = () => {
 
 
         if (!res.ok) {
-          return; // Exit if there's an error
+          return;
         }
 
         const data = await res.json();
 
         if (data.success) {
-          dispatch(setCompanies(data.companies)); // Dispatch companies
+          dispatch(setCompanies(data.companies)); 
         } else {
-          console.error("Error fetching companies:", data.message); // Log error message
+          console.error("Error fetching companies:", data.message); 
         }
       } catch (error) {
-        console.error("Fetch error:", error); // Log fetch errors
+        console.error("Fetch error:", error); 
       }
     };
 
-    fetchCompany(); // Call the fetch function
-  }, []); // Add dispatch to dependencies
+    fetchCompany(); 
+  }, []); 
   
 };
 

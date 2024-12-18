@@ -32,7 +32,7 @@ const CompanyCreate = () => {
             if (res.ok && data.company) {
                 dispatch(setSingleCompany(data.company)); 
                 toast.success(data.message || 'Company registered successfully');
-                const companyId = data.company._id; // Access safely after checking
+                const companyId = data.company._id; 
                 navigate(`/admin/companies/${companyId}`);
             } else {
                 toast.error(data.error || "Failed to register company");

@@ -23,7 +23,7 @@ const AdminNavbar = () => {
       if (data.success) {
         dispatch(setAdmin(null)); // Clear admin from state
         toast.success(data.message);
-        navigate("/");
+        navigate("/"); // Redirect to home page after logout
       } else {
         throw new Error(data.message || "Logout failed");
       }
@@ -37,11 +37,12 @@ const AdminNavbar = () => {
       <div className="flex justify-between items-center mx-auto max-w-7xl px-4">
         <div>
           <h1 className="text-3xl font-bold text-[#6A38C2]">
-            Jobbers<span className="text-[#F83002]">Portal</span>
+            Jobbers
           </h1>
         </div>
         <div className="flex items-center gap-8">
-          {!admin && ( 
+          {/* Display Logout button if admin is logged in */}
+          {admin && (
             <button
               onClick={logoutHandler}
               className="flex items-center gap-2 text-sm text-red-600 hover:underline mt-2"
@@ -50,6 +51,14 @@ const AdminNavbar = () => {
               Logout
             </button>
           )}
+
+          {/* "Home" button always visible */}
+          <button
+            onClick={() => navigate("/")}
+            className="flex items-center gap-2 text-lg text-black hover:underline mt-2"
+          >
+            Home
+          </button>
         </div>
       </div>
     </nav>
